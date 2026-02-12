@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kanji 日 Stroke Order Final v3</title>
+<style>
+body {
+    margin:0;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+svg {
+    width:320px;
+    height:320px;
+}
+
+.stroke {
+    fill:none;
+    stroke:black;
+    stroke-width:10;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.number {
+    font-size:20px;
+    font-family:Arial;
+    fill:black;
+    opacity:0;
+}
+</style>
+</head>
+<body>
+
+<svg viewBox="0 0 200 200">
+
+<!-- 1 Vertikal kiri -->
+<path id="s1" class="stroke" d="M60 40 L60 160" />
+<text id="n1" x="35" y="90" class="number">1</text>
+
+<!-- 2 Atas lalu turun kanan -->
+<path id="s2" class="stroke" d="M60 40 L145 40 L145 160" />
+<text id="n2" x="90" y="25" class="number">2</text>
+
+<!-- 3 Horizontal tengah -->
+<path id="s3" class="stroke" d="M60 100 L145 100" />
+<text id="n3" x="90" y="90" class="number">3</text>
+
+<!-- 4 Horizontal bawah -->
+<path id="s4" class="stroke" d="M60 160 L145 160" />
+<text id="n4" x="90" y="185" class="number">4</text>
+
+</svg>
+
+<script>
+const strokes = [
+    {path: s1, num: n1},
+    {path: s2, num: n2},
+    {path: s3, num: n3},
+    {path: s4, num: n4}
+];
+
+function prepare() {
+    strokes.forEach(s => {
+        const len = s.path.getTotalLength();
+        s.path.style.strokeDasharray = len;
+        s.path.style.strokeDashoffset = len;
+        s.path.style.transition = "none";
+        s.num.style.opacity = 0;
+    });
+}
+
+function animate() {
+    strokes.forEach((s, i) => {
+        const len = s.path.getTotalLength();
+        setTimeout(() => {
+            s.num.style.opacity = 1; // number appears SAME TIME stroke starts
+            s.path.style.transition = "stroke-dashoffset 0.8s linear";
+            s.path.style.strokeDashoffset = 0;
+        }, i * 900);
+    });
+}
+
+function loop() {
+    prepare();
+    setTimeout(animate, 100);
+    setTimeout(loop, 4000);
+}
+
+loop();
+</script>
+
+</body>
+</html>
